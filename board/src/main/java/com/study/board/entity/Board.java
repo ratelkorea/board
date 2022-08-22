@@ -1,6 +1,8 @@
 package com.study.board.entity;
 
 import lombok.Data;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,4 +19,8 @@ public class Board {
     private String title;
 
     private String content;
+
+    private String filename;
+
+    private String filepath;
 }
