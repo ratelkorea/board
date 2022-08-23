@@ -3,6 +3,8 @@ package com.study.board.service;
 import com.study.board.entity.Board;
 import com.study.board.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,11 +27,14 @@ public class BoardService {
         File saveFile = new File(projectPath, fileName);
         file.transferTo(saveFile);
 
+        board.setFilename(fileName);
+        board.setFilepath("/files/" + fileName);
+
         boardRepository.save(board);
     }
 
-    public List<Board> boardList(){
-        return boardRepository.findAll();
+    public Page<Board> boardList(Pageable pageable){
+        return boardRepository.findAll(pageable);
     }
 
     public Board boardView(Integer id){
@@ -39,5 +44,9 @@ public class BoardService {
     // 특정 게시글 삭제
     public void boardDelete(Integer id){
         boardRepository.deleteById(id);
+    }
+
+    public Page<Board> boardSearchList(String searchKeyword, Pageable pageable){
+        return boardRepository.findByTitleContaining(searchKeyword, pageable);
     }
 }
